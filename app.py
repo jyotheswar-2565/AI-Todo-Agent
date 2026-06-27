@@ -1,7 +1,14 @@
 import streamlit as st
 import json
-import os
-import json
+
+# Ensure files exist BEFORE anything runs
+if not os.path.exists("tasks.json"):
+    with open("tasks.json", "w") as f:
+        json.dump([], f)
+
+if not os.path.exists("users.json"):
+    with open("users.json", "w") as f:
+        json.dump([], f)
 
 from agent import generate_tasks
 from agent import analyze_progress
