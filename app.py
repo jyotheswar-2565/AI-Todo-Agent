@@ -1,6 +1,7 @@
 import streamlit as st
 import json
-
+import os
+import json
 
 from agent import generate_tasks
 from agent import analyze_progress
@@ -13,6 +14,14 @@ from io import BytesIO
 
 from reportlab.platypus import SimpleDocTemplate, Spacer, Paragraph
 from reportlab.lib.styles import getSampleStyleSheet
+
+import os
+import json
+
+def ensure_tasks_file():
+    if not os.path.exists("tasks.json"):
+        with open("tasks.json", "w") as f:
+            json.dump([], f)
 
 def create_certificate_pdf(course_name):
 
@@ -275,9 +284,12 @@ if st.session_state.show_quiz:
 # Generate Tasks From Goal
 # ------------------------------
 
-with open("tasks.json", "r") as file:
-    tasks = json.load(file)
 
+with open("tasks.json", "r") as file:
+    try:
+        tasks = json.load(file)
+    except:
+        tasks = []
 total_tasks = len(tasks)
 
 completed_tasks = sum(
