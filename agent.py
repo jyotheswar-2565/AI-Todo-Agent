@@ -1,44 +1,30 @@
 import google.generativeai as genai
 from google.api_core.exceptions import ResourceExhausted
-# from dotenv import load_dotenv
-# import os
-
-# load_dotenv()
-
-# genai.configure(
-#     api_key=os.getenv("GEMINI_API_KEY")
-# )
-
+from dotenv import load_dotenv
 import os
-import streamlit as st
+
+load_dotenv()
 
 genai.configure(
-    api_key=os.getenv("GEMINI_API_KEY") or st.secrets["GEMINI_API_KEY"]
+    api_key=os.getenv("GEMINI_API_KEY")
 )
 
 model = genai.GenerativeModel("gemini-2.5-flash")
 
 
-# def ask_gemini(prompt):
-#     try:
-#         response = model.generate_content(prompt)
-#         return response.text
 def ask_gemini(prompt):
     try:
         response = model.generate_content(prompt)
-        if not response or not hasattr(response, "text"):
-            return "⚠️ Empty response from Gemini"
         return response.text
 
     except ResourceExhausted:
         return (
             "⚠️ Gemini API quota exceeded. "
-            "Please wait or use another API key."
+            "Please wait for the quota reset or use another API key."
         )
 
     except Exception as e:
-        return f"⚠️ Gemini error: {type(e).__name__} - {str(e)}"
-
+        return f"Error: {str(e)}"
 
 
 def generate_tasks(goal):
