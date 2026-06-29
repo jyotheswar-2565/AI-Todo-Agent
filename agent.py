@@ -33,10 +33,18 @@ def ask_gemini(prompt):
 def generate_tasks(goal):
 
     prompt = f"""
-4 tasks only:
-{goal}
-"""
+Convert goal into ONLY 5 tasks.
 
+RULES:
+- Output ONLY tasks
+- One task per line
+- No explanation
+- No numbering
+- No headings
+- No extra text
+
+Goal: {goal}
+"""
     return ask_gemini(prompt)
 
 
