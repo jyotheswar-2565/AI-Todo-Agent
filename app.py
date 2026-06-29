@@ -18,9 +18,9 @@ if not os.path.exists(TASK_FILE):
     save_tasks([])
 
 from agent import generate_tasks
-from agent import analyze_progress
-from agent import prioritize_tasks
-from agent import create_daily_plan
+#from agent import analyze_progress
+#from agent import prioritize_tasks
+#from agent import create_daily_plan
 from agent import chat_with_agent
 from agent import generate_quiz
 from datetime import date
