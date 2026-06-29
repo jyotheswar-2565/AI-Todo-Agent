@@ -10,7 +10,6 @@ from google.api_core.exceptions import ResourceExhausted
 # )
 
 import os
-import google.generativeai as genai
 import streamlit as st
 
 genai.configure(
@@ -20,19 +19,25 @@ genai.configure(
 model = genai.GenerativeModel("gemini-2.5-flash")
 
 
+# def ask_gemini(prompt):
+#     try:
+#         response = model.generate_content(prompt)
+#         return response.text
 def ask_gemini(prompt):
     try:
         response = model.generate_content(prompt)
+        if not response or not hasattr(response, "text"):
+            return "⚠️ Empty response from Gemini"
         return response.text
 
     except ResourceExhausted:
         return (
             "⚠️ Gemini API quota exceeded. "
-            "Please wait for the quota reset or use another API key."
+            "Please wait or use another API key."
         )
 
     except Exception as e:
-        return f"Error: {str(e)}"
+        return f"⚠️ Gemini error: {type(e).__name__} - {str(e)}"
 
 
 

@@ -14,8 +14,7 @@ def save_tasks(tasks):
     with open(TASK_FILE, "w") as f:
         json.dump(tasks, f, indent=4)
 
-with st.spinner("Generating tasks..."):
-    ai_tasks = generate_tasks(goal)
+
 
 if not os.path.exists(TASK_FILE):
     save_tasks([])
