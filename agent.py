@@ -33,82 +33,75 @@ def ask_gemini(prompt):
 def generate_tasks(goal):
 
     prompt = f"""
-Break this goal into 8 simple tasks.
-
-Goal: {goal}
-
-Rules:
-- Only tasks
-- One per line
-- No numbering
-- No explanation
+4 tasks only:
+{goal}
 """
 
     return ask_gemini(prompt)
 
 
-def analyze_progress(tasks):
+# def analyze_progress(tasks):
 
-    prompt = f"""
-    You are an AI career coach.
+#     prompt = f"""
+#     You are an AI career coach.
 
-    Analyze the user's completed and pending tasks.
+#     Analyze the user's completed and pending tasks.
 
-    Tell:
-    1. What progress has been made.
-    2. What skills are already covered.
-    3. What should be focused on next.
-    4. One motivational suggestion.
+#     Tell:
+#     1. What progress has been made.
+#     2. What skills are already covered.
+#     3. What should be focused on next.
+#     4. One motivational suggestion.
 
-    Tasks:
-    {tasks}
-    """
+#     Tasks:
+#     {tasks}
+#     """
 
-    return ask_gemini(prompt)
-
-
-def prioritize_tasks(tasks):
-
-    prompt = f"""
-    Categorize the following tasks into:
-
-    High Priority
-    Medium Priority
-    Low Priority
-
-    Tasks:
-    {tasks}
-
-    Return in a clean format.
-    """
-
-    return ask_gemini(prompt)
+#     return ask_gemini(prompt)
 
 
-def create_daily_plan(tasks, available_hours):
+# def prioritize_tasks(tasks):
 
-    prompt = f"""
-    You are an AI productivity coach.
+#     prompt = f"""
+#     Categorize the following tasks into:
 
-    Create a daily plan based on:
+#     High Priority
+#     Medium Priority
+#     Low Priority
 
-    Available Hours:
-    {available_hours}
+#     Tasks:
+#     {tasks}
 
-    Tasks:
-    {tasks}
+#     Return in a clean format.
+#     """
 
-    Only consider pending tasks.
+#     return ask_gemini(prompt)
 
-    Allocate time wisely.
 
-    Return:
-    - Ordered task list
-    - Time allocation
-    - Short explanation
-    """
+# def create_daily_plan(tasks, available_hours):
 
-    return ask_gemini(prompt)
+#     prompt = f"""
+#     You are an AI productivity coach.
+
+#     Create a daily plan based on:
+
+#     Available Hours:
+#     {available_hours}
+
+#     Tasks:
+#     {tasks}
+
+#     Only consider pending tasks.
+
+#     Allocate time wisely.
+
+#     Return:
+#     - Ordered task list
+#     - Time allocation
+#     - Short explanation
+#     """
+
+#     return ask_gemini(prompt)
 
 
 def chat_with_agent(user_query, tasks):
