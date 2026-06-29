@@ -1,12 +1,20 @@
 import google.generativeai as genai
 from google.api_core.exceptions import ResourceExhausted
-from dotenv import load_dotenv
-import os
+# from dotenv import load_dotenv
+# import os
 
-load_dotenv()
+# load_dotenv()
+
+# genai.configure(
+#     api_key=os.getenv("GEMINI_API_KEY")
+# )
+
+import os
+import google.generativeai as genai
+import streamlit as st
 
 genai.configure(
-    api_key=os.getenv("GEMINI_API_KEY")
+    api_key=os.getenv("GEMINI_API_KEY") or st.secrets["GEMINI_API_KEY"]
 )
 
 model = genai.GenerativeModel("gemini-2.5-flash")
@@ -25,6 +33,7 @@ def ask_gemini(prompt):
 
     except Exception as e:
         return f"Error: {str(e)}"
+
 
 
 def generate_tasks(goal):
