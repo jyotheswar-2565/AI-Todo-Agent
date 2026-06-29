@@ -344,7 +344,10 @@ with btn2:
 if generate_clicked:
     st.session_state.course_name = goal
 
-    ai_tasks = generate_tasks(goal)
+    #ai_tasks = generate_tasks(goal)
+
+    with st.spinner("🤖 Generating tasks... please wait"):
+      ai_tasks = generate_tasks(goal)
 
     with open("tasks.json", "r") as file:
         tasks = json.load(file)

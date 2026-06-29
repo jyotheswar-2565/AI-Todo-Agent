@@ -9,19 +9,25 @@ genai.configure(
     api_key=os.getenv("GEMINI_API_KEY")
 )
 
-model = genai.GenerativeModel("gemini-2.5-flash")
+model = genai.GenerativeModel(
+    "gemini-2.5-flash",
+    generation_config={
+        "temperature": 0.3,
+        "max_output_tokens": 300
+    }
+)
 
 
 def ask_gemini(prompt):
     try:
-        response = model.generate_content(prompt)
+        response = model.generate_content(
+            prompt,
+            request_options={"timeout": 30}
+        )
         return response.text
 
     except ResourceExhausted:
-        return (
-            "⚠️ Gemini API quota exceeded. "
-            "Please wait for the quota reset or use another API key."
-        )
+        return "⚠️ Gemini API quota exceeded. Try again later."
 
     except Exception as e:
         return f"Error: {str(e)}"
@@ -30,14 +36,16 @@ def ask_gemini(prompt):
 def generate_tasks(goal):
 
     prompt = f"""
-    Convert the following goal into a practical task list.
+Break this goal into 8 simple tasks.
 
-    Goal:
-    {goal}
+Goal: {goal}
 
-    Return only task names.
-    One task per line.
-    """
+Rules:
+- Only tasks
+- One per line
+- No numbering
+- No explanation
+"""
 
     return ask_gemini(prompt)
 
@@ -126,49 +134,36 @@ def chat_with_agent(user_query, tasks):
 def generate_quiz(task):
 
     prompt = f"""
-    Create exactly 10 multiple choice questions about:
+Create exactly 10 multiple choice questions about:
 
-    {task}
+{task}
 
-    Return ONLY a JSON array.
+Return ONLY a JSON array.
 
-    Do NOT use markdown.
-    Do NOT use ```json.
-    Do NOT add explanations.
+Do NOT use markdown.
+Do NOT use ```json.
+Do NOT add explanations.
 
-    Format:
-
-    [
-      {{
-        "question": "...",
-        "options": ["A","B","C","D"],
-        "answer": "..."
-      }}
-    ]
-    """
-
-    try:
-        response = model.generate_content(prompt)
-        return response.text
-
-    except ResourceExhausted:
-        return """
+Format:
 [
-    {
-        "question": "Gemini API quota exceeded. Please try again later.",
-        "options": ["OK"],
-        "answer": "OK"
-    }
+  {{
+    "question": "...",
+    "options": ["A","B","C","D"],
+    "answer": "..."
+  }}
 ]
 """
+
+    try:
+        return ask_gemini(prompt)
 
     except Exception as e:
         return f"""
 [
-    {{
-        "question": "Error: {str(e)}",
-        "options": ["OK"],
-        "answer": "OK"
-    }}
+  {{
+    "question": "Error: {str(e)}",
+    "options": ["OK"],
+    "answer": "OK"
+  }}
 ]
 """
