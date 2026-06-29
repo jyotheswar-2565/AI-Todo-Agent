@@ -1,14 +1,21 @@
-import streamlit as st
+import os
 import json
+import streamlit as st
 
-# Ensure files exist BEFORE anything runs
-if not os.path.exists("tasks.json"):
-    with open("tasks.json", "w") as f:
-        json.dump([], f)
+TASK_FILE = "tasks.json"
 
-if not os.path.exists("users.json"):
-    with open("users.json", "w") as f:
-        json.dump([], f)
+def load_tasks():
+    if not os.path.exists(TASK_FILE):
+        return []
+    with open(TASK_FILE, "r") as f:
+        return json.load(f)
+
+def save_tasks(tasks):
+    with open(TASK_FILE, "w") as f:
+        json.dump(tasks, f, indent=4)
+
+if not os.path.exists(TASK_FILE):
+    save_tasks([])
 
 from agent import generate_tasks
 from agent import analyze_progress
@@ -21,14 +28,6 @@ from io import BytesIO
 
 from reportlab.platypus import SimpleDocTemplate, Spacer, Paragraph
 from reportlab.lib.styles import getSampleStyleSheet
-
-import os
-import json
-
-def ensure_tasks_file():
-    if not os.path.exists("tasks.json"):
-        with open("tasks.json", "w") as f:
-            json.dump([], f)
 
 def create_certificate_pdf(course_name):
 
@@ -291,12 +290,10 @@ if st.session_state.show_quiz:
 # Generate Tasks From Goal
 # ------------------------------
 
+# with open("tasks.json", "r") as file:
+#     tasks = json.load(file)
+tasks = load_tasks()
 
-with open("tasks.json", "r") as file:
-    try:
-        tasks = json.load(file)
-    except:
-        tasks = []
 total_tasks = len(tasks)
 
 completed_tasks = sum(
@@ -385,8 +382,9 @@ if reset_clicked:
 
 st.subheader("My Tasks")
 
-with open("tasks.json", "r") as file:
-    tasks = json.load(file)
+# with open("tasks.json", "r") as file:
+#     tasks = json.load(file)
+tasks = load_tasks()
 
 for index, item in enumerate(tasks):
 
