@@ -400,19 +400,20 @@ for index, item in enumerate(tasks):
         )
 
     with col2:
-        
-        if item["status"] == "Completed":
-            st.success("✅")
-        
-        else:
-            if st.button(
+
+        if st.button(
             "Complete",
             key=f"c{index}"
         ):
-                tasks[index]["status"] = "Completed"
+
+            tasks[index]["status"] = "Completed"
 
             with open("tasks.json", "w") as file:
-                json.dump(tasks, file, indent=4)
+                json.dump(
+                    tasks,
+                    file,
+                    indent=4
+                )
 
             st.rerun()
 
