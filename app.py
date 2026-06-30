@@ -205,7 +205,6 @@ if st.session_state.show_quiz:
                 answer = st.radio(
                     q["question"],
                     q["options"],
-                    index=None,
                     key=f"quiz_{i}"
                 )
 
@@ -416,7 +415,7 @@ for index, item in enumerate(tasks):
                 )
 
             st.rerun()
-    
+
     with col3:
 
         if st.button(
