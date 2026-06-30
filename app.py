@@ -205,6 +205,7 @@ if st.session_state.show_quiz:
                 answer = st.radio(
                     q["question"],
                     q["options"],
+                    index=None,
                     key=f"quiz_{i}"
                 )
 
@@ -399,20 +400,19 @@ for index, item in enumerate(tasks):
         )
 
     with col2:
-
-        if st.button(
+        
+        if item["status"] == "Completed":
+            st.success("✅")
+        
+        else:
+            if st.button(
             "Complete",
             key=f"c{index}"
         ):
-
-            tasks[index]["status"] = "Completed"
+                tasks[index]["status"] = "Completed"
 
             with open("tasks.json", "w") as file:
-                json.dump(
-                    tasks,
-                    file,
-                    indent=4
-                )
+                json.dump(tasks, file, indent=4)
 
             st.rerun()
 
